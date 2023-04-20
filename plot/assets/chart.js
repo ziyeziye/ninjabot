@@ -222,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
           rangeslider: { visible: false },
           showline: true,
           anchor: standaloneIndicators > 0 ? "y3" : "y2",
+          hoverformat: "%Y-%m-%d %H:%M:%S",
         },
         yaxis2: {
           domain: standaloneIndicators > 0 ? [0.4, 0.9] : [0, 0.9],
