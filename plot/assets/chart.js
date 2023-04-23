@@ -230,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
           mirror: true,
           showline: true,
           gridcolor: "#ddd",
+          exponentformat:"none",
         },
         yaxis1: {
           domain: [0.9, 1],
@@ -237,6 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
           mirror: true,
           showline: true,
           gridcolor: "#ddd",
+          exponentformat:"none",
         },
         hovermode: "x unified",
         annotations: annotations,
