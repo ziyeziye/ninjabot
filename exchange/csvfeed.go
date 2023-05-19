@@ -100,8 +100,8 @@ func NewCSVFeed(targetTimeframe string, feeds ...PairFeed) (*CSVFeed, error) {
 			}
 
 			candle := model.Candle{
-				Time:      time.Unix(int64(timestamp), 0).UTC(),
-				UpdatedAt: time.Unix(int64(timestamp), 0).UTC(),
+				Time:      time.Unix(int64(timestamp), 0),
+				UpdatedAt: time.Unix(int64(timestamp), 0),
 				Pair:      feed.Pair,
 				Complete:  true,
 			}
@@ -183,7 +183,7 @@ func isFistCandlePeriod(t time.Time, fromTimeframe, targetTimeframe string) (boo
 		return false, err
 	}
 
-	prev := t.Add(-fromDuration).UTC()
+	prev := t.Add(-fromDuration)
 
 	return isLastCandlePeriod(prev, fromTimeframe, targetTimeframe)
 }
@@ -198,7 +198,7 @@ func isLastCandlePeriod(t time.Time, fromTimeframe, targetTimeframe string) (boo
 		return false, err
 	}
 
-	next := t.Add(fromDuration).UTC()
+	next := t.Add(fromDuration)
 
 	switch targetTimeframe {
 	case "1m":
