@@ -43,13 +43,7 @@ type AssetInfo struct {
 type Dataframe struct {
 	Pair string
 
-	Close  Series[float64]
-	Open   Series[float64]
-	High   Series[float64]
-	Low    Series[float64]
-	Volume Series[float64]
-
-	Time       []time.Time
+	OHLC
 	LastUpdate time.Time
 
 	// Custom user metadata
@@ -72,6 +66,63 @@ func (df Dataframe) Sample(positions int) Dataframe {
 	sample.Time = sample.Time[start:]
 
 	return sample
+}
+
+// OHLC is a connector for technical analysis usage
+type OHLC struct {
+	Close  Series[float64]
+	Open   Series[float64]
+	High   Series[float64]
+	Low    Series[float64]
+	Volume Series[float64]
+
+	Time []time.Time
+}
+
+// HL2 (最高价+最低价)/2
+func (df OHLC) HL2() []float64 {
+	var result []float64
+
+	for i, _ := range df.Close {
+		result = append(result, (df.High[i]+df.Low[i])/2)
+	}
+	return result
+}
+
+// HLC3 (最高价+最低价+收盘价)/3
+func (df OHLC) HLC3() []float64 {
+	var result []float64
+
+	for i, _ := range df.Close {
+		result = append(result, (df.High[i]+df.Low[i]+df.Close[i])/3)
+	}
+	return result
+}
+
+// OHLC4 (开盘价 + 最高价 + 最低价 + 收盘价)/4
+func (df OHLC) OHLC4() []float64 {
+	var result []float64
+
+	for i, _ := range df.Close {
+		result = append(result, (df.Open[i]+df.High[i]+df.Low[i]+df.Close[i])/4)
+	}
+	return result
+}
+func (df OHLC) Last() Candle {
+	length := len(df.Close)
+	if length == 0 {
+		return Candle{}
+	}
+
+	i := length - 1
+	return Candle{
+		Time:   df.Time[i],
+		Open:   df.Open[i],
+		Close:  df.Close[i],
+		Low:    df.Low[i],
+		High:   df.High[i],
+		Volume: df.Volume[i],
+	}
 }
 
 type Candle struct {
