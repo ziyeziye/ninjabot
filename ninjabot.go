@@ -188,7 +188,7 @@ func (n *NinjaBot) Summary() {
 
 	buffer := bytes.NewBuffer(nil)
 	table := tablewriter.NewWriter(buffer)
-	table.SetHeader([]string{"Pair", "Trades", "Win", "Loss", "% Win", "Payoff", "SQN", "Profit", "Volume"})
+	table.SetHeader([]string{"交易对", "交易次数", "赢", "亏", "胜率", "Payoff", "SQN", "利润", "交易额"})
 	table.SetFooterAlignment(tablewriter.ALIGN_RIGHT)
 	avgPayoff := 0.0
 
@@ -213,7 +213,7 @@ func (n *NinjaBot) Summary() {
 	}
 
 	table.SetFooter([]string{
-		"TOTAL",
+		"总计",
 		strconv.Itoa(wins + loses),
 		strconv.Itoa(wins),
 		strconv.Itoa(loses),
