@@ -70,17 +70,19 @@ func (df Dataframe) Sample(positions int) Dataframe {
 
 // OHLC is a connector for technical analysis usage
 type OHLC struct {
-	Close  Series[float64]
-	Open   Series[float64]
-	High   Series[float64]
-	Low    Series[float64]
-	Volume Series[float64]
-
-	Time []time.Time
+	Close         Series[float64]
+	Open          Series[float64]
+	High          Series[float64]
+	Low           Series[float64]
+	Volume        Series[float64]
+	ChangePercent Series[float64]
+	IsBullMarket  []bool
+	Time          []time.Time
+	IsHeikinAshi  bool
 }
 
 // HL2 (最高价+最低价)/2
-func (df OHLC) HL2() []float64 {
+func (df *OHLC) HL2() []float64 {
 	var result []float64
 
 	for i, _ := range df.Close {
@@ -90,7 +92,7 @@ func (df OHLC) HL2() []float64 {
 }
 
 // HLC3 (最高价+最低价+收盘价)/3
-func (df OHLC) HLC3() []float64 {
+func (df *OHLC) HLC3() []float64 {
 	var result []float64
 
 	for i, _ := range df.Close {
@@ -100,7 +102,7 @@ func (df OHLC) HLC3() []float64 {
 }
 
 // OHLC4 (开盘价 + 最高价 + 最低价 + 收盘价)/4
-func (df OHLC) OHLC4() []float64 {
+func (df *OHLC) OHLC4() []float64 {
 	var result []float64
 
 	for i, _ := range df.Close {
@@ -108,13 +110,8 @@ func (df OHLC) OHLC4() []float64 {
 	}
 	return result
 }
-func (df OHLC) Last() Candle {
-	length := len(df.Close)
-	if length == 0 {
-		return Candle{}
-	}
 
-	i := length - 1
+func (df *OHLC) Candle(i int) Candle {
 	return Candle{
 		Time:   df.Time[i],
 		Open:   df.Open[i],
@@ -123,6 +120,41 @@ func (df OHLC) Last() Candle {
 		High:   df.High[i],
 		Volume: df.Volume[i],
 	}
+}
+
+func (df *OHLC) Last(index ...int) Candle {
+	length := len(df.Close)
+	if length == 0 {
+		return Candle{}
+	}
+
+	position := 0
+	if len(index) > 0 {
+		position = index[0]
+	}
+	i := length - 1 - position
+	return df.Candle(i)
+}
+
+// ToHeikinAshi 转换成平均K线
+func (df *OHLC) ToHeikinAshi() *OHLC {
+	ha := NewHeikinAshi()
+
+	for i, _ := range df.Time {
+		candle := df.Candle(i)
+		candle = candle.ToHeikinAshi(ha)
+		df.Close[i] = candle.Close
+		df.Open[i] = candle.Open
+		df.Low[i] = candle.Low
+		df.High[i] = candle.High
+		df.Volume[i] = candle.Volume
+		df.ChangePercent[i] = (df.Close[i] - df.Open[i]) / df.Open[i]
+		if df.Close[i] > df.Open[i] {
+			df.IsBullMarket[i] = true
+		}
+	}
+	df.IsHeikinAshi = true
+	return df
 }
 
 type Candle struct {
