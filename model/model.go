@@ -140,6 +140,8 @@ func (df *OHLC) Last(index ...int) Candle {
 func (df *OHLC) ToHeikinAshi() *OHLC {
 	ha := NewHeikinAshi()
 
+	df.ChangePercent = make([]float64, len(df.Close))
+	df.IsBullMarket = make([]bool, len(df.Close))
 	for i, _ := range df.Time {
 		candle := df.Candle(i)
 		candle = candle.ToHeikinAshi(ha)
