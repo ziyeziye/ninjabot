@@ -137,26 +137,35 @@ func (df *OHLC) Last(index ...int) Candle {
 }
 
 // ToHeikinAshi 转换成平均K线
-func (df *OHLC) ToHeikinAshi() *OHLC {
+func (df *OHLC) ToHeikinAshi() (n *OHLC) {
 	ha := NewHeikinAshi()
 
-	df.ChangePercent = make([]float64, len(df.Close))
-	df.IsBullMarket = make([]bool, len(df.Close))
+	length := len(df.Close)
+	n = &OHLC{
+		Close:         make([]float64, length),
+		Open:          make([]float64, length),
+		High:          make([]float64, length),
+		Low:           make([]float64, length),
+		Volume:        df.Volume,
+		ChangePercent: make([]float64, length),
+		IsBullMarket:  make([]bool, length),
+		Time:          df.Time,
+		IsHeikinAshi:  true,
+	}
 	for i, _ := range df.Time {
 		candle := df.Candle(i)
 		candle = candle.ToHeikinAshi(ha)
-		df.Close[i] = candle.Close
-		df.Open[i] = candle.Open
-		df.Low[i] = candle.Low
-		df.High[i] = candle.High
-		df.Volume[i] = candle.Volume
-		df.ChangePercent[i] = (df.Close[i] - df.Open[i]) / df.Open[i]
+		n.Close[i] = candle.Close
+		n.Open[i] = candle.Open
+		n.Low[i] = candle.Low
+		n.High[i] = candle.High
+		n.Volume[i] = candle.Volume
+		n.ChangePercent[i] = (df.Close[i] - df.Open[i]) / df.Open[i]
 		if df.Close[i] > df.Open[i] {
-			df.IsBullMarket[i] = true
+			n.IsBullMarket[i] = true
 		}
 	}
-	df.IsHeikinAshi = true
-	return df
+	return n
 }
 
 type Candle struct {
