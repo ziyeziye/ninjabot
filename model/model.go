@@ -58,13 +58,15 @@ func (df Dataframe) Sample(positions int) Dataframe {
 	}
 
 	sample := Dataframe{
-		Pair:       df.Pair,
-		Close:      df.Close.LastValues(positions),
-		Open:       df.Open.LastValues(positions),
-		High:       df.High.LastValues(positions),
-		Low:        df.Low.LastValues(positions),
-		Volume:     df.Volume.LastValues(positions),
-		Time:       df.Time[start:],
+		Pair: df.Pair,
+		OHLC: OHLC{
+			Close:  df.Close.LastValues(positions),
+			Open:   df.Open.LastValues(positions),
+			High:   df.High.LastValues(positions),
+			Low:    df.Low.LastValues(positions),
+			Volume: df.Volume.LastValues(positions),
+			Time:   df.Time[start:],
+		},
 		LastUpdate: df.LastUpdate,
 		Metadata:   make(map[string]Series[float64]),
 	}
