@@ -6,8 +6,8 @@ require (
 	github.com/StudioSol/set v1.0.0
 	github.com/adshao/go-binance/v2 v2.4.5
 	github.com/aybabtme/uniplot v0.0.0-20151203143629-039c559e5e7e
-	github.com/evanw/esbuild v0.19.2
-	github.com/glebarez/sqlite v1.9.0
+	github.com/evanw/esbuild v0.19.5
+	github.com/glebarez/sqlite v1.10.0
 	github.com/jpillora/backoff v1.0.0
 	github.com/markcheno/go-talib v0.0.0-20190307022042-cd53a9264d70
 	github.com/olekukonko/tablewriter v0.0.5
@@ -17,11 +17,12 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/tidwall/buntdb v1.3.0
 	github.com/urfave/cli/v2 v2.25.7
-	github.com/vektra/mockery/v2 v2.33.1
+	github.com/vektra/mockery/v2 v2.36.0
 	github.com/xhit/go-str2duration/v2 v2.1.0
-	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
+	gonum.org/v1/gonum v0.13.0
 	gopkg.in/tucnak/telebot.v2 v2.5.0
-	gorm.io/gorm v1.25.4
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -35,6 +36,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jinzhu/copier v0.3.5 // indirect
@@ -75,7 +77,7 @@ require (
 	golang.org/x/mod v0.9.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/term v0.6.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
